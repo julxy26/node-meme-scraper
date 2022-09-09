@@ -8,6 +8,10 @@ async function getMeme() {
     const response = await fetch(
       'https://memegen-link-examples-upleveled.netlify.app/',
     );
+
+    if (response.statusCode === 200) {
+      console.log('error');
+    }
     const html = await response.text();
     const $ = cheerio.load(html);
     let images = [];
@@ -33,8 +37,8 @@ async function getMeme() {
         '10',
       ];
       const path = `./Memes/${fileName[i]}.jpg`;
-      const download = (url, path, callback) => {
-        request.head(url, (err, res, body) => {
+      const download = (link, directory, callback) => {
+        request.head(url, () => {
           request(url).pipe(fs.createWriteStream(path)).on('close', callback);
         });
       };
@@ -46,4 +50,5 @@ async function getMeme() {
     console.log(error);
   }
 }
-getMeme();
+
+await getMeme();
