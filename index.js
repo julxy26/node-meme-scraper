@@ -36,6 +36,11 @@ async function getMeme() {
         '09',
         '10',
       ];
+      const dir = './Memes';
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+      }
       const path = `./Memes/${fileName[i]}.jpg`;
       const download = (link, directory, callback) => {
         request.head(url, () => {
