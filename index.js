@@ -26,14 +26,14 @@ async function getMeme() {
     for (let i = 0; i < images.length; i++) {
       const url = images[i];
       const fileName = [];
-      let addon = '0';
+      let addOn = '0';
 
       for (let j = 0; j < 10; j++) {
         if (j === 9) {
-          addon = '';
+          addOn = '';
         }
 
-        fileName.push(addon + (j + 1).toString());
+        fileName.push(addOn + (j + 1).toString());
       }
 
       const dir = './memes';
@@ -49,20 +49,19 @@ async function getMeme() {
       };
       download(url, path, () => {});
     }
+    const bar = new progressBar('downloading :bar :percent', {
+      total: 10,
+    });
+    const timer = setInterval(function () {
+      bar.tick();
+      if (bar.complete) {
+        console.log('complete 🎉');
+        clearInterval(timer);
+      }
+    }, 100);
   } catch (error) {
     console.log(error);
   }
 }
-
-const bar = new progressBar('downloading :bar :percent', {
-  total: 10,
-});
-const timer = setInterval(function () {
-  bar.tick();
-  if (bar.complete) {
-    console.log('complete 🎉');
-    clearInterval(timer);
-  }
-}, 100);
 
 await getMeme();
