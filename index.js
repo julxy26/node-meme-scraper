@@ -60,7 +60,7 @@ const bar = new progressBar('downloading :bar :percent', {
 const timer = setInterval(function () {
   bar.tick();
   if (bar.complete) {
-    console.log('complete 🎉\n');
+    console.log('complete 🎉');
     clearInterval(timer);
   }
 }, 100);
