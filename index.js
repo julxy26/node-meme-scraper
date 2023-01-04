@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
+import progressBar from 'progress';
 import request from 'request';
 
 async function getMeme() {
@@ -46,13 +47,22 @@ async function getMeme() {
           request(url).pipe(fs.createWriteStream(path)).on('close', callback);
         });
       };
-      download(url, path, () => {
-        console.log('Memes successfully saved!');
-      });
+      download(url, path, () => {});
     }
   } catch (error) {
     console.log(error);
   }
 }
+
+const bar = new progressBar('downloading :bar :percent', {
+  total: 10,
+});
+const timer = setInterval(function () {
+  bar.tick();
+  if (bar.complete) {
+    console.log('complete 🎉\n');
+    clearInterval(timer);
+  }
+}, 100);
 
 await getMeme();
