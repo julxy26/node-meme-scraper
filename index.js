@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import fetch from 'node-fetch';
 import request from 'request';
 
@@ -24,24 +24,23 @@ async function getMeme() {
 
     for (let i = 0; i < images.length; i++) {
       const url = images[i];
-      const fileName = [
-        '01',
-        '02',
-        '03',
-        '04',
-        '05',
-        '06',
-        '07',
-        '08',
-        '09',
-        '10',
-      ];
-      const dir = './Memes';
+      const fileName = [];
+      let addon = '0';
+
+      for (let j = 0; j < 10; j++) {
+        if (j === 9) {
+          addon = '';
+        }
+
+        fileName.push(addon + (j + 1).toString());
+      }
+
+      const dir = './memes';
 
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir);
       }
-      const path = `./Memes/${fileName[i]}.jpg`;
+      const path = `./memes/${fileName[i]}.jpg`;
       const download = (link, directory, callback) => {
         request.head(url, () => {
           request(url).pipe(fs.createWriteStream(path)).on('close', callback);
